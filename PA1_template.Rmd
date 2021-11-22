@@ -8,7 +8,7 @@ output:
 
 ## 1. Loading and preprocessing the data
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE ,results ='asis')
 library(dplyr)
 library(ggplot2)
 unzip(zipfile = "C:/Users/b002882/Desktop/PRINT/NEERAJA/Reproducible Research/Week2/RepData_PeerAssessment1/repdata_data_activity.zip",exdir = "C:/Users/b002882/Desktop/PRINT/NEERAJA/Reproducible Research/Week2/RepData_PeerAssessment1")
@@ -23,21 +23,21 @@ activitydata <- read.csv("activity.csv")
 #group by date and calculate sum of steps date wise
 # 2.calculate Mean and median number of steps taken each day
 
-```{r}
+```{r ,echo = TRUE ,results ='asis'}
 datewisesteps <- activitydata %>% select(date,steps) %>% na.omit() %>% group_by(date) %>% summarise(totalsteps=sum(steps))
 mean(datewisesteps$totalsteps)
 median(datewisesteps$totalsteps)
 
 ```
 ## 3.Histogram of the total number of steps taken each day
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 hist(datewisesteps$totalsteps, xlab="Total Steps",main="Total steps taken per day ", breaks = 20)
 
 
 ```
 ## 4.What is the average daily activity pattern?
 
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 dailyactivityinterval <- activitydata %>% select(interval,steps) %>% na.omit() %>% group_by(interval) %>% summarize(meansteps=mean(steps))
 ggplot(dailyactivityinterval,aes(x=interval, y=meansteps))+geom_line()+ggtitle("Average daily activity pattern")
 
@@ -45,13 +45,13 @@ ggplot(dailyactivityinterval,aes(x=interval, y=meansteps))+geom_line()+ggtitle("
 
 ## 5.The 5-minute interval that, on average, contains the maximum number of steps
 
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 dailyactivityinterval[which(dailyactivityinterval$meansteps == max(dailyactivityinterval$meansteps)),]
 ```
 ## 6.Imputing missing values
 #6.1.Calculate and report the total number of missing values in the dataset 
 
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 sum(is.na(activitydata$steps))
 
 ```
@@ -67,7 +67,7 @@ mergeActivity <- cbind(activitydata,dailyactivityinterval)
 mergeActivity$steps[is.na(mergeActivity$steps)]<- mergeActivity$meansteps[is.na(mergeActivity$steps)]
 ```
 #6.4.histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 imputedatewisesteps <- mergeActivity %>% select(date,steps) %>% group_by(date) %>% summarise(totalsteps=sum(steps))
 
 hist(imputedatewisesteps$totalsteps, xlab="Total Steps",main="Total steps taken per day ", breaks = 20)
@@ -79,7 +79,7 @@ mean(imputedatewisesteps$totalsteps)
 median(imputedatewisesteps$totalsteps)
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+```{r,echo = TRUE ,results ='asis'}
 
 weekdetails <- subset(mergeActivity[,c("steps","date","interval")])
 
