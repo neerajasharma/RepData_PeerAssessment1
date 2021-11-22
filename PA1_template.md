@@ -8,32 +8,6 @@ output:
 
 ## 1. Loading and preprocessing the data
 
-```r
-library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
-library(ggplot2)
-unzip(zipfile = "C:/Users/b002882/Desktop/PRINT/NEERAJA/Reproducible Research/Week2/RepData_PeerAssessment1/repdata_data_activity.zip",exdir = "C:/Users/b002882/Desktop/PRINT/NEERAJA/Reproducible Research/Week2/RepData_PeerAssessment1")
-activitydata <- read.csv("activity.csv")
-```
 
 
 
@@ -47,24 +21,20 @@ datewisesteps <- activitydata %>% select(date,steps) %>% na.omit() %>% group_by(
 mean(datewisesteps$totalsteps)
 ```
 
-```
-## [1] 10766.19
-```
+[1] 10766.19
 
 ```r
 median(datewisesteps$totalsteps)
 ```
 
-```
-## [1] 10765
-```
+[1] 10765
 ## 3.Histogram of the total number of steps taken each day
 
 ```r
 hist(datewisesteps$totalsteps, xlab="Total Steps",main="Total steps taken per day ", breaks = 20)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 ## 4.What is the average daily activity pattern?
 
 
@@ -73,7 +43,7 @@ dailyactivityinterval <- activitydata %>% select(interval,steps) %>% na.omit() %
 ggplot(dailyactivityinterval,aes(x=interval, y=meansteps))+geom_line()+ggtitle("Average daily activity pattern")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ## 5.The 5-minute interval that, on average, contains the maximum number of steps
 
@@ -82,12 +52,10 @@ ggplot(dailyactivityinterval,aes(x=interval, y=meansteps))+geom_line()+ggtitle("
 dailyactivityinterval[which(dailyactivityinterval$meansteps == max(dailyactivityinterval$meansteps)),]
 ```
 
-```
-## # A tibble: 1 x 2
-##   interval meansteps
-##      <int>     <dbl>
-## 1      835      206.
-```
+# A tibble: 1 x 2
+  interval meansteps
+     <int>     <dbl>
+1      835      206.
 ## 6.Imputing missing values
 #6.1.Calculate and report the total number of missing values in the dataset 
 
@@ -96,9 +64,7 @@ dailyactivityinterval[which(dailyactivityinterval$meansteps == max(dailyactivity
 sum(is.na(activitydata$steps))
 ```
 
-```
-## [1] 2304
-```
+[1] 2304
 #6.2.strategy:fill  all of the missing values in the dataset by the mean for that 5-minute interval.
 # cbind dataframe with missing steps data and meansteps calculated dataframe
 
@@ -119,24 +85,20 @@ imputedatewisesteps <- mergeActivity %>% select(date,steps) %>% group_by(date) %
 hist(imputedatewisesteps$totalsteps, xlab="Total Steps",main="Total steps taken per day ", breaks = 20)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 #6.4.1.Calculate and report the mean and median total number of steps taken per day
 
 ```r
 mean(imputedatewisesteps$totalsteps)
 ```
 
-```
-## [1] 10766.19
-```
+[1] 10766.19
 
 ```r
 median(imputedatewisesteps$totalsteps)
 ```
 
-```
-## [1] 10766.19
-```
+[1] 10766.19
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
@@ -151,5 +113,5 @@ weekdetails$week  <- ifelse(weekdetails$weekday=="Saturday" |weekdetails$weekday
 ggplot(weekdetails,aes(x=interval,y=steps,color=week)) + geom_line()+facet_grid(week~.)+xlab("Interval")+ylab("Steps")+ggtitle("Activity patterns in weekdays and weekends")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
